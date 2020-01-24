@@ -16,6 +16,10 @@ jobs:
         $secret = ConvertTo-SecureString -String "${{ secrets.AZURE_CLIENT_SECRET }}" -AsPlainText -Force
         $tenantId = "${{ secrets.AZURE_TENANT_ID }}"
         $cred = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $clientId, $secret
-        Install-Module -Name "Az" -Scope CurrentUser -Force | Out-File "install_az_module.out"
+        Install-Module -Name "Az" -Scope CurrentUser -Force | Out-Null
         Import-Module Az
         Connect-AzAccount -Credential $cred -Tenant $tenantId -ServicePrincipal
+    - name: Validate Template
+      shell: pwsh
+      run: |
+        & .\Deploy-AzTemplate.ps1 . -Location "westus2" -ValidateOnly
