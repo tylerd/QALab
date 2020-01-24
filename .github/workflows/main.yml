@@ -16,4 +16,5 @@ jobs:
         $secret = ConvertTo-SecureString -String "${{ secrets.AZURE_CLIENT_SECRET }}" -AsPlainText -Force
         $tenantId = "${{ secrets.AZURE_TENANT_ID }}"
         $cred = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $clientId, $secret
+        Install-Module -Name "Az" -Scope CurrentUser -Force 
         Connect-AzAccount -Credential $cred -Tenant $tenantId -ServicePrincipal
