@@ -15,4 +15,5 @@ jobs:
     - name: Validate Template
       shell: pwsh
       run: |
-        & .\Deploy-AzTemplate.ps1 . -Location "westus2" -ValidateOnly
+        $env:PSModulePath = "/usr/share/az_2.8.0:" + $env:PSModulePath
+        . .\Deploy-AzTemplate.ps1 . -Location "westus2" -ValidateOnly
