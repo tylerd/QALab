@@ -12,14 +12,14 @@ jobs:
     - name: Login to Azure
       shell: pwsh
       run: |
+        $env:PSModulePath = "/usr/share/az_2.8.0:" + $env:PSModulePath;
         $clientId = "${{ secrets.AZURE_CLIENT_ID }}"
         $secret = ConvertTo-SecureString -String "${{ secrets.AZURE_CLIENT_SECRET }}" -AsPlainText -Force
         $tenantId = "${{ secrets.AZURE_TENANT_ID }}"
         $cred = New-Object -TypeName "System.Management.Automation.PSCredential" -ArgumentList $clientId, $secret
-        Install-Module -Name "Az" -Scope CurrentUser -Force | Out-Null
-        Import-Module Az
         Connect-AzAccount -Credential $cred -Tenant $tenantId -ServicePrincipal
     - name: Validate Template
       shell: pwsh
       run: |
-        & .\Deploy-AzTemplate.ps1 . -Location "westus2" -ValidateOnly
+        $env:PSModulePath = "/usr/share/az_2.8.0:" + $env:PSModulePath;
+        . .\Deploy-AzTemplate.ps1 . -Location "westus2" -ValidateOnly
